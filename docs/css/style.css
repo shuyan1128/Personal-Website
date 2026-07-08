@@ -33,6 +33,7 @@ a:hover { color: #729003; }
 .view-root.transitioning { opacity: 0; transform: translateY(10px); }
 
 .postcard-view.hidden { display: none; }
+.hidden { display: none; }
 
 /* Contact buttons (chat / linkedin / résumé) */
 .contact-link {

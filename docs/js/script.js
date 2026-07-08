@@ -4,25 +4,40 @@
 
   var projectMap = {
     health: {
-      status: 'Shipped', tag: 'Personal · LLM',
       title: 'Health Journal Assistant',
-      oneLiner: 'A journaling companion that turns plain-language notes about how you feel into structured, trackable health data.',
-      appUrl: '#', githubUrl: 'https://github.com/shuyanyan/health-journal'
+      description: 'This is an AI-assisted personal health journal that:',
+      bullets: [
+        'Conversationally captures your daily symptoms',
+        'Remembers recurring triggers',
+        'Builds correlations over time',
+        'Surfaces possible patterns',
+        'Helps you prepare for doctor visits',
+        'Turns vague feelings into trackable signals'
+      ],
+      appUrl: '#', githubUrl: 'https://github.com/shuyanyan/health-journal',
+      preview: 'assets/healthjournal.gif'
     },
     stylist: {
-      status: 'In progress', tag: 'Personal · AI',
       title: 'AI Stylist',
-      oneLiner: 'An AI stylist that learns your taste and builds outfits from the clothes you already own.',
+      wipNote: '✎ still a WIP — a few design prototypes below',
+      gallery: [
+        { src: 'assets/ai-stylist-1.png', note: 'describe a feeling, or auto-pick an outfit' },
+        { src: 'assets/ai-stylist-4.png', note: 'AI generates a mood board based on your input' },
+        { src: 'assets/ai-stylist-3.png', note: 'final looks, using clothes from your own closet' }
+      ],
       appUrl: '#', githubUrl: 'https://github.com/shuyanyan/ai-stylist'
     },
     ordering: {
-      status: 'Shipped', tag: 'Mobile',
       title: 'College Ordering App',
-      oneLiner: 'A campus food-ordering app that streamlines order-ahead and pickup for students and dining halls.',
+      wide: true,
+      description: 'A 2-interface app with ordering and order-tracking features, enabling online ordering for both customers and vendors. It helps reduce the wait for customers to get a drink, and increases vendor efficiency.',
+      media: [
+        { src: 'assets/ordering-customer.gif', label: 'Customer', caption: 'Customer-facing front: place order, track order status' },
+        { src: 'assets/ordering-vendor.gif', label: 'Vendor', caption: 'Vendor-facing front: place order, inventory management, mark order status' }
+      ],
       appUrl: '#', githubUrl: 'https://github.com/shuyanyan/college-ordering'
     },
     music: {
-      status: 'Creative', tag: 'Side project',
       title: 'Music Map',
       oneLiner: 'A map-based way to explore music — turning listening into a sense of place.',
       appUrl: '#', githubUrl: 'https://github.com/shuyanyan/music-map'
@@ -41,10 +56,16 @@
     projects: document.getElementById('nav-projects')
   };
   var modal = document.getElementById('project-modal');
-  var modalStatus = document.getElementById('modal-status');
-  var modalTag = document.getElementById('modal-tag');
+  var modalPanel = document.getElementById('modal-panel');
+  var modalPreviewWrap = document.getElementById('modal-preview-wrap');
+  var modalPreview = document.getElementById('modal-preview');
+  var modalWipNote = document.getElementById('modal-wip-note');
   var modalTitle = document.getElementById('modal-title');
   var modalOneLiner = document.getElementById('modal-oneliner');
+  var modalDescription = document.getElementById('modal-description');
+  var modalBullets = document.getElementById('modal-bullets');
+  var modalGallery = document.getElementById('modal-gallery');
+  var modalMedia = document.getElementById('modal-media');
   var modalAppLink = document.getElementById('modal-app-link');
   var modalGithubLink = document.getElementById('modal-github-link');
 
@@ -75,13 +96,75 @@
     var p = projectMap[id];
     if (!p) return;
     state.openId = id;
-    modalStatus.textContent = p.status;
-    modalTag.textContent = p.tag;
+
+    modalPanel.style.maxWidth = p.wide ? 'clamp(380px,94vw,760px)' : 'clamp(380px,90vw,560px)';
+
+    if (p.preview) {
+      modalPreview.src = p.preview;
+      modalPreviewWrap.style.display = 'flex';
+    } else {
+      modalPreview.src = '';
+      modalPreviewWrap.style.display = 'none';
+    }
+    if (p.wipNote) {
+      modalWipNote.textContent = p.wipNote;
+      modalWipNote.style.display = 'block';
+    } else {
+      modalWipNote.textContent = '';
+      modalWipNote.style.display = 'none';
+    }
     modalTitle.textContent = p.title;
-    modalOneLiner.textContent = p.oneLiner;
+
+    // Reset every switchable content block, then clear its content, so nothing
+    // from a previously opened project can leak into this one.
+    modalOneLiner.style.display = 'none';
+    modalOneLiner.textContent = '';
+    modalDescription.style.display = 'none';
+    modalDescription.textContent = '';
+    modalBullets.style.display = 'none';
+    modalBullets.innerHTML = '';
+    modalGallery.style.display = 'none';
+    modalGallery.innerHTML = '';
+    modalMedia.style.display = 'none';
+    modalMedia.innerHTML = '';
+
+    if (p.description) {
+      modalDescription.textContent = p.description;
+      modalDescription.style.display = 'block';
+    }
+    if (p.gallery) {
+      var rotations = ['rotate(-4deg) translateX(-6px)', 'rotate(3deg) translateX(8px)', 'rotate(-2deg) translateX(-3px)'];
+      var pins = ['pin-red.png', 'pin-teal.png', 'pin-pink-small.png'];
+      modalGallery.innerHTML = p.gallery.map(function (g, i) {
+        return '<div style="position:relative; background:#fff; padding:10px 10px 22px; border-radius:3px; box-shadow:0 10px 20px rgba(43,36,29,0.18); transform:' + rotations[i % rotations.length] + '; margin:0 auto 32px; width:82%; max-width:280px;">' +
+          '<img src="' + g.src + '" alt="" style="display:block; width:100%; border-radius:2px;">' +
+          '<div style="margin-top:12px; text-align:center; font-family:\'Space Mono\',monospace; font-size:12.5px; color:#a2206e; line-height:1.5;">' + g.note + '</div>' +
+          '<img src="assets/' + pins[i % pins.length] + '" alt="" style="position:absolute; top:-14px; left:50%; transform:translateX(-50%) rotate(-6deg); width:26px; pointer-events:none;">' +
+        '</div>';
+      }).join('');
+      modalGallery.style.display = 'block';
+    } else if (p.media) {
+      modalMedia.innerHTML = p.media.map(function (m) {
+        return '<div style="text-align:left;">' +
+          '<img src="' + m.src + '" alt="" style="display:block; width:100%; border-radius:10px; border:1px solid #e2d8c6;">' +
+          '<div style="margin-top:10px; font-family:\'Space Mono\',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#4a7aa6;">' + m.label + '</div>' +
+          '<div style="margin-top:3px; font-family:\'Space Mono\',monospace; font-size:12.5px; line-height:1.55; color:#4a4036;">' + m.caption + '</div>' +
+        '</div>';
+      }).join('');
+      modalMedia.style.display = 'flex';
+    } else if (p.bullets) {
+      modalBullets.innerHTML = p.bullets.map(function (b) {
+        return '<li style="display:flex; gap:8px; font-size:13.5px; line-height:1.5; color:#4a4036;"><span style="color:var(--accent,#b5613a); flex-shrink:0;">→</span><span>' + b + '</span></li>';
+      }).join('');
+      modalBullets.style.display = 'flex';
+    } else if (p.oneLiner) {
+      modalOneLiner.textContent = p.oneLiner;
+      modalOneLiner.style.display = 'block';
+    }
     modalAppLink.href = p.appUrl;
     modalGithubLink.href = p.githubUrl;
     modal.classList.remove('hidden');
+    modal.scrollTop = 0;
     document.body.style.overflow = 'hidden';
   };
 
