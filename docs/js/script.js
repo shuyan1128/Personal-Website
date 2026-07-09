@@ -30,6 +30,7 @@
     ordering: {
       title: 'College Ordering App',
       wide: true,
+      accent: '#4a7aa6',
       description: 'A 2-interface app with ordering and order-tracking features, enabling online ordering for both customers and vendors. It helps reduce the wait for customers to get a drink, and increases vendor efficiency.',
       media: [
         { src: 'assets/ordering-customer.gif', label: 'Customer', caption: 'Customer-facing front: place order, track order status' },
@@ -39,7 +40,14 @@
     },
     music: {
       title: 'Music Map',
-      oneLiner: 'A map-based way to explore music — turning listening into a sense of place.',
+      wide: true,
+      accent: '#8a6db0',
+      description: 'Music Map provides a social space for people to share music related to locations that hold special meanings to them. Additionally, Music Map empowers users who seek human-recommended music to discover or rediscover "new" music enriched with special personal meanings and stories.',
+      media: [
+        { src: 'assets/music-map-intro.png', label: 'Landing', caption: 'Click the map to drop a note, or click an existing note to browse songs shared at that location' },
+        { src: 'assets/music-map-add-note.png', label: 'Add a note', caption: 'Search for a song, add an optional username and note, then attach it to a location' },
+        { src: 'assets/music-map-view-note.png', label: 'View notes', caption: 'Browse songs shared at a location, complete with personal stories, likes, and replies' }
+      ],
       appUrl: '#', githubUrl: 'https://github.com/shuyanyan/music-map'
     }
   };
@@ -144,10 +152,11 @@
       }).join('');
       modalGallery.style.display = 'block';
     } else if (p.media) {
+      var mediaAccent = p.accent || '#4a7aa6';
       modalMedia.innerHTML = p.media.map(function (m) {
         return '<div style="text-align:left;">' +
           '<img src="' + m.src + '" alt="" style="display:block; width:100%; border-radius:10px; border:1px solid #e2d8c6;">' +
-          '<div style="margin-top:10px; font-family:\'Space Mono\',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#4a7aa6;">' + m.label + '</div>' +
+          '<div style="margin-top:10px; font-family:\'Space Mono\',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:' + mediaAccent + ';">' + m.label + '</div>' +
           '<div style="margin-top:3px; font-family:\'Space Mono\',monospace; font-size:12.5px; line-height:1.55; color:#4a4036;">' + m.caption + '</div>' +
         '</div>';
       }).join('');
