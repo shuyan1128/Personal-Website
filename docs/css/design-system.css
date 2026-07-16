@@ -268,6 +268,8 @@
 }
 .ds-project-box:hover { transform: translateY(-4px); }
 .ds-project-box img { display: block; width: 100%; height: auto; }
+.ds-project-box--static { cursor: default; }
+.ds-project-box--static:hover { transform: none; }
 
 .ds-project-box--offwhite { background: var(--ds-offwhite); color: #2b241d; border-color: var(--ds-red); }
 .ds-project-box--brown { background: var(--ds-brown); color: var(--ds-offwhite); border-color: var(--ds-red); }
@@ -308,6 +310,8 @@
 .ds-project-box__tag--mustard { background: #E8A33D; color: #2b241d; }
 .ds-project-box__tag--purple { background: #604A3E; }
 .ds-project-box__tag--pink { background: #CD4B2B; }
+.ds-project-box__tag--olive { background: #6B7A3D; }
+.ds-project-box__tag--sage { background: #5C7A6E; }
 
 /* ---------- Personal Projects — masonry layout ---------- */
 .ds-projects-masonry {
@@ -382,13 +386,20 @@
   z-index: 3;
 }
 @media (max-width: 900px) {
-  .ds-about-wrap { padding: 60px 24px 100px; }
+  .ds-about-wrap {
+    padding: 60px 24px 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
   .ds-about-resume, .ds-about-calendar, .ds-about-chat, .ds-about-laptop, .ds-about-linkedin {
     position: relative;
     top: auto; left: auto; right: auto; bottom: auto;
     display: inline-block;
     margin: 8px;
   }
+  .ds-about-callout { order: -2; flex-basis: 100%; margin-top: 0; margin-bottom: 20px; }
+  .ds-about-main { order: -1; flex-basis: 100%; }
   .ds-intro-card__grid { grid-template-columns: 1fr; }
   .ds-intro-card__left { border-right: none; padding-right: 0; border-bottom: 1.5px solid rgba(205,75,43,0.35); padding-bottom: 20px; margin-bottom: 20px; }
 }

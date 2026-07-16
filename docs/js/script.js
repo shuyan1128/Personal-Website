@@ -5,17 +5,15 @@
   var projectMap = {
     health: {
       title: 'Health Journal Assistant',
-      description: 'This is an AI-assisted personal health journal that:',
-      bullets: [
-        'Conversationally captures your daily symptoms',
-        'Remembers recurring triggers',
-        'Builds correlations over time',
-        'Surfaces possible patterns',
-        'Helps you prepare for doctor visits',
-        'Turns vague feelings into trackable signals'
+      wide: true,
+      accent: '#2B9B65',
+      items: [
+        { type: 'image', src: 'assets/personal-projects-screenshots/health-journal-landing.png', label: 'Landing', caption: 'Landing page that remembers your previously entered symptoms' },
+        { type: 'flip', images: ['assets/personal-projects-screenshots/health-journal-convo1.png', 'assets/personal-projects-screenshots/health-journal-convo2.png'], label: 'Conversation', caption: 'The AI asks context-aware follow-up questions and draws on general health knowledge to infer possible contributors to your symptoms, comparing what you\'re experiencing now against your historical patterns and recurring personal triggers.' },
+        { type: 'image', src: 'assets/personal-projects-screenshots/health-journal-tracking.png', label: 'History', caption: 'View your past entries' },
+        { type: 'image', src: 'assets/personal-projects-screenshots/health-journal-AI-insights.png', label: 'Insights', caption: 'AI generates personalized insights for you based on your logged history. It builds correlations over time, surfaces possible patterns, and helps you prepare for your doctor visits.' }
       ],
-      appUrl: 'https://health-journal-flax.vercel.app/', githubUrl: 'https://github.com/shuyan1128/health-journal',
-      preview: 'assets/personal-projects-screenshots/healthjournal.gif'
+      appUrl: 'https://health-journal-flax.vercel.app/', githubUrl: 'https://github.com/shuyan1128/health-journal'
     },
     stylist: {
       title: 'AI Stylist',
@@ -151,13 +149,41 @@
         '</div>';
       }).join('');
       modalGallery.style.display = 'block';
+    } else if (p.items) {
+      var itemsAccent = p.accent || '#4a7aa6';
+      modalMedia.innerHTML = p.items.map(function (item, idx) {
+        var imgSrc = item.type === 'flip' ? item.images[0] : item.src;
+        var flipBtn = item.type === 'flip'
+          ? '<button type="button" class="flip-btn" data-flip-idx="' + idx + '" aria-label="Show next image" style="position:absolute; bottom:12px; right:12px; width:34px; height:34px; border-radius:50%; border:none; background:rgba(43,36,29,0.75); color:#fffdf6; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center;">→</button>'
+          : '';
+        return '<div style="text-align:left; max-width:380px; margin:0 auto;">' +
+          '<div style="position:relative;">' +
+            '<img class="flip-img" data-flip-idx="' + idx + '" src="' + imgSrc + '" alt="" style="display:block; width:100%; border-radius:10px; border:1px solid #e2d8c6;">' +
+            flipBtn +
+          '</div>' +
+          '<div style="margin-top:10px; font-family:\'Space Mono\',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:' + itemsAccent + ';">' + item.label + '</div>' +
+          '<div style="margin-top:3px; font-family:\'Hanken Grotesk\',sans-serif; font-size:12.5px; line-height:1.55; color:#4a4036;">' + item.caption + '</div>' +
+        '</div>';
+      }).join('');
+      modalMedia.style.display = 'flex';
+      modalMedia.querySelectorAll('.flip-btn').forEach(function (btn) {
+        var idx = btn.getAttribute('data-flip-idx');
+        var images = p.items[idx].images;
+        var pos = 0;
+        var img = modalMedia.querySelector('.flip-img[data-flip-idx="' + idx + '"]');
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          pos = (pos + 1) % images.length;
+          img.src = images[pos];
+        });
+      });
     } else if (p.media) {
       var mediaAccent = p.accent || '#4a7aa6';
       modalMedia.innerHTML = p.media.map(function (m) {
-        return '<div style="text-align:left;">' +
+        return '<div style="text-align:left; max-width:380px; margin:0 auto;">' +
           '<img src="' + m.src + '" alt="" style="display:block; width:100%; border-radius:10px; border:1px solid #e2d8c6;">' +
           '<div style="margin-top:10px; font-family:\'Space Mono\',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:' + mediaAccent + ';">' + m.label + '</div>' +
-          '<div style="margin-top:3px; font-family:\'Space Mono\',monospace; font-size:12.5px; line-height:1.55; color:#4a4036;">' + m.caption + '</div>' +
+          '<div style="margin-top:3px; font-family:\'Hanken Grotesk\',sans-serif; font-size:12.5px; line-height:1.55; color:#4a4036;">' + m.caption + '</div>' +
         '</div>';
       }).join('');
       modalMedia.style.display = 'flex';

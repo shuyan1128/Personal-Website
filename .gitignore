@@ -1,0 +1,9 @@
+.DS_Store
+**/.DS_Store
+
+# Large media assets hosted on GitHub Releases instead of git (see project-assets-v1)
+docs/assets/personal-projects-screenshots/personal mixtape.gif
+docs/assets/personal-projects-screenshots/lasercut.gif
+docs/assets/personal-projects-screenshots/Music Map gif.gif
+docs/assets/personal-projects-screenshots/Health assistant.gif
+docs/assets/personal-projects-screenshots/m&h.gif
