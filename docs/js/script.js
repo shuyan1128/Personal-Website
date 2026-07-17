@@ -219,5 +219,26 @@
     if (e.key === 'Escape') window.closeProject();
   });
 
+  function playPostcardEntrance() {
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var pieces = document.querySelectorAll('.ds-postcard-anim');
+    pieces.forEach(function (el, i) {
+      if (reduceMotion) return;
+      var rot = 'rotate(var(--rot, 0deg))';
+      var anim = el.animate([
+        { opacity: 0, transform: 'translateY(28px) scale(0.92) ' + rot },
+        { opacity: 1, transform: 'translateY(0) scale(1) ' + rot }
+      ], {
+        duration: 550,
+        delay: i * 90,
+        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        fill: 'both'
+      });
+      // Hand control back to normal CSS (so :hover lift works) once entrance settles.
+      anim.onfinish = function () { anim.cancel(); };
+    });
+  }
+
   applyView();
+  playPostcardEntrance();
 })();

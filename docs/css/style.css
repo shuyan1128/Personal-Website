@@ -53,6 +53,11 @@ a:hover { color: #729003; }
 .stamp-card { transform: rotate(var(--rot)); transition: transform .2s ease; }
 .stamp-card:hover { transform: rotate(var(--rot)) translateY(-6px); }
 
+/* About-page postcard pieces: resting transform + staggered entrance (see script.js) */
+.ds-postcard-anim { transform: rotate(var(--rot, 0deg)); }
+.ds-postcard-hover { transition: transform .2s ease; }
+.ds-postcard-hover:hover { transform: rotate(var(--rot, 0deg)) translateY(-6px); }
+
 /* In-flow nav */
 .nav-btn {
   font-family: 'Space Mono', monospace; font-size: 12.5px; letter-spacing: 0.03em;
